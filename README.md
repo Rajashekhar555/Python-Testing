@@ -1,25 +1,29 @@
  # Python-Testing
-Splitting Paragraph into Lines:
+justify_paragraph() Function:
 
-justify_paragraph function takes in two parameters: paragraph (input text) and width (page width).
-It splits the paragraph into words and then constructs lines such that no word is broken across lines, considering the given width.
-The function stores each line as a list of words within the lines list.
-Justifying Lines:
+This function takes a paragraph string and a width as parameters.
+It splits the paragraph into words.
+It constructs lines based on the page width such that no word is broken across lines.
+For each line, it calculates the number of spaces needed to justify the text evenly.
+It then creates justified lines by adding appropriate spaces between words.
+The function returns an array of justified strings.
+get_valid_input() Function:
 
-For each line in the lines list, the function justifies the text to the specified width.
-It handles single-word lines or lines that occupy the entire width separately from lines that contain multiple words.
-For lines with multiple words, it calculates the number of spaces needed between words to reach the desired width without breaking words.
-Formatting Output:
+This function takes a prompt message and a validation function as parameters.
+It repeatedly asks the user for input until the input satisfies the validation function.
+It returns the valid input.
+validate_paragraph() Function:
 
-The function constructs formatted strings for each justified line according to the specified output format (Array [index] = justified_line).
-These formatted strings are stored in the justified_lines list, which is then returned by the function.
-User Input and Output:
-User Input:
+This function validates the paragraph input from the user.
+It checks if the length of the input paragraph is greater than zero (i.e., not empty).
+validate_page_width() Function:
 
-The script prompts the user to enter a paragraph and a page width.
-It accepts user input using input() function and stores them in user_paragraph and user_width variables, respectively.
-Processing and Displaying Justified Lines:
+This function validates the page width input from the user.
+It checks if the input consists only of digits and is greater than zero.
+The program starts by asking the user to input a paragraph using get_valid_input().
 
-The script calls the justify_paragraph function with the user-provided paragraph and page width.
-It receives the justified lines as a list (justified_paragraph).
-For each line in justified_paragraph, it prints the line, displaying each line in the requested format (Array [index] = justified_line).
+Then, it prompts the user for the page width using get_valid_input().
+
+The paragraph and page width are passed to the justify_paragraph() function to obtain the justified lines.
+
+Finally, the program displays the justified strings in an array-like format using a loop (for i, line in enumerate(justified_paragraph, 1)).
