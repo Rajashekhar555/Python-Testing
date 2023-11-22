@@ -1,48 +1,42 @@
-def justify_text(paragraph, page_width):
+def justify_paragraph(paragraph, width):
     words = paragraph.split()
     lines = []
     current_line = []
     current_length = 0
 
     for word in words:
-        # If adding the next word exceeds the page width, append the current line to lines
-        if current_length + len(word) + len(current_line) > page_width:
+        if current_length + len(word) + len(current_line) <= width:
+            current_line.append(word)
+            current_length += len(word)
+        else:
             lines.append(current_line)
-            current_line = []
-            current_length = 0
+            current_line = [word]
+            current_length = len(word)
 
-        current_line.append(word)
-        current_length += len(word)
-
-    # Append the last line if there are remaining words
     if current_line:
         lines.append(current_line)
 
-    # Join the lines into left and right justified strings
     justified_lines = []
-    for line in lines:
-        total_spaces = page_width - sum(len(word) for word in line)
-        spaces_between_words = len(line) - 1 if len(line) > 1 else 1
-        space_per_word = total_spaces // spaces_between_words
-        extra_spaces = total_spaces % spaces_between_words
-
-        justified_line = ""
-        for i, word in enumerate(line):
-            justified_line += word
-            if i < len(line) - 1:
-                justified_line += " " * space_per_word
-                if extra_spaces > 0:
-                    justified_line += " "
-                    extra_spaces -= 1
-
-        justified_lines.append(justified_line)
+    for idx, line in enumerate(lines, 1):
+        if len(line) == 1 or len(line) == width:  # Single word or full line
+            justified_lines.append(f"Array [{idx}] = {' '.join(line).ljust(width)}")
+        else:
+            spaces_needed = width - sum(len(word) for word in line)
+            num_gaps = len(line) - 1
+            spaces_between_words = spaces_needed // num_gaps
+            extra_spaces = spaces_needed % num_gaps
+            justified_line = ""
+            for i in range(len(line) - 1):
+                justified_line += line[i] + ' ' * (spaces_between_words + (1 if i < extra_spaces else 0))
+            justified_line += line[-1]
+            justified_lines.append(f"Array [{idx}] = {justified_line}")
 
     return justified_lines
 
-# Example usage
-paragraph = "This is a sample text but a complicated problem to be solved, so we are adding more text to see that it actually works."
-page_width = 20
+# Accepting user input for paragraph and page width
+user_paragraph = input("Enter the paragraph: ")
+user_width = int(input("Enter the page width: "))
 
-justified_text = justify_text(paragraph, page_width)
-for i, line in enumerate(justified_text, start=1):
-    print(f"Array [{i}] = \"{line}\"")
+justified_paragraph = justify_paragraph(user_paragraph, user_width)
+for line in justified_paragraph:
+    print(line)
