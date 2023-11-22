@@ -17,9 +17,9 @@ def justify_paragraph(paragraph, width):
         lines.append(current_line)
 
     justified_lines = []
-    for idx, line in enumerate(lines, 1):
+    for line in lines:
         if len(line) == 1 or len(line) == width:  # Single word or full line
-            justified_lines.append(f"Array [{idx}] = {' '.join(line).ljust(width)}")
+            justified_lines.append(" ".join(line).ljust(width))
         else:
             spaces_needed = width - sum(len(word) for word in line)
             num_gaps = len(line) - 1
@@ -29,14 +29,31 @@ def justify_paragraph(paragraph, width):
             for i in range(len(line) - 1):
                 justified_line += line[i] + ' ' * (spaces_between_words + (1 if i < extra_spaces else 0))
             justified_line += line[-1]
-            justified_lines.append(f"Array [{idx}] = {justified_line}")
+            justified_lines.append(justified_line)
 
     return justified_lines
 
-# Accepting user input for paragraph and page width
-user_paragraph = input("Enter the paragraph: ")
-user_width = int(input("Enter the page width: "))
+def get_valid_input(prompt, validation_func):
+    while True:
+        user_input = input(prompt)
+        if validation_func(user_input):
+            return user_input
+        else:
+            print("Invalid input. Please try again.")
 
-justified_paragraph = justify_paragraph(user_paragraph, user_width)
-for line in justified_paragraph:
-    print(line)
+def validate_paragraph(paragraph):
+    return len(paragraph) > 0
+
+def validate_page_width(width):
+    return width.isdigit() and int(width) > 0
+
+# Get paragraph input from user with validation
+paragraph = get_valid_input("Enter a paragraph: ", validate_paragraph)
+
+# Get page width input from user with validation
+page_width = get_valid_input("Enter the page width: ", validate_page_width)
+page_width = int(page_width)
+
+justified_paragraph = justify_paragraph(paragraph, page_width)
+for i, line in enumerate(justified_paragraph, 1):
+    print(f"Array [{i}] = {line}")
